@@ -35,18 +35,21 @@ class BoggleAppTestCase(TestCase):
     def test_api_new_game(self):
         """Test starting a new game."""
         with app.test_client() as client:
-            #FIXME: need to add POST data for response
             response = client.post('/api/new-game')
             game_data = response.get_json()
 
+            self.assertEqual(type(game_data["board"][0]),list)
 
-            breakpoint()
-            print('response', response, 'html', game_data)
-
-            self.assertEqual(type(game_data["board"]),list)
-            #TODO: check that there is a list inside list
             self.assertEqual(type(game_data["gameId"]),str)
-            #TODO: checl the route stores the new game in the games dictionary
+
+            self.assertIn(game_data['gameId'], games.keys())
             self.assertTrue(response.is_json)
             self.assertEqual(response.status_code,200)
             # write a test for this route
+
+    def test_api_score_word(self):
+        """Test scoring a word."""
+        with app.test_client() as client:
+            response = client.post('/api/score-word')
+            word_and_game_id = response.get_json()
+            breakpoint()

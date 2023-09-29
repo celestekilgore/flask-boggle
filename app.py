@@ -20,6 +20,7 @@ def homepage():
     return render_template("index.html")
 
 
+
 @app.post("/api/new-game")
 def new_game():
     """Start a new game and return JSON: {game_id, board}."""
@@ -30,3 +31,24 @@ def new_game():
     games[game_id] = game
 
     return jsonify(gameId=game_id, board=game.board)
+
+@app.post("/api/score-word")
+def word_score():
+    #follow format of 'takes JSON' and show
+    """Check if word is in word list and on the board and
+    return JSON: {result: 'not-word'} OR
+    {result: 'not-on-board'} OR
+    {result: 'ok'}
+    """
+
+    gameId = request.json['gameId']
+    word = request.json['word']
+
+    if not games[gameId].is_word_in_word_list(word):
+        return jsonify(result='not-word')
+    elif not games[gameId].check_word_on_board(word):
+        return jsonify(result='not-on-board')
+    else:
+        games[gameId].play_and_score_word(word)
+        return jsonify(result='ok')
+
