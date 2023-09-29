@@ -29,4 +29,4 @@ def new_game():
     game = BoggleGame()
     games[game_id] = game
 
-    return jsonify({"gameId": f"{game_id}", "board": f"{game.board}"})
+    return jsonify(gameId=game_id, board=game.board)
