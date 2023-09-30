@@ -40,7 +40,7 @@ def word_score():
     {result: 'not-on-board'} OR
     {result: 'ok'}
     """
-
+    
     gameId = request.json['gameId']
     word = request.json['word']
 
